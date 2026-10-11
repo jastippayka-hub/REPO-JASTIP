@@ -1,0 +1,458 @@
+{
+  "users": [
+    {
+      "id": "user-pelanggan-1",
+      "name": "Rusdiana (Pelanggan)",
+      "email": "rusdianaaa240@gmail.com",
+      "phone": "081254001122",
+      "role": "pelanggan",
+      "approvalStatus": "APPROVED",
+      "passwordHash": "$2b$08$4pQdkDwQ3wWdPJJGk711TOeL5SywoHWFVog5T7vYEo9zw9ltVOcHy",
+      "address": "Jl. Tani Gg. Sejahtera No. 18, Singkawang Barat",
+      "walletBalance": 200000,
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rusdiana",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "user-driver-1",
+      "name": "Budi Kurniawan (Driver)",
+      "email": "budi.kurir@paykajastip.id",
+      "phone": "082155778899",
+      "role": "driver",
+      "approvalStatus": "APPROVED",
+      "passwordHash": "$2b$08$4pQdkDwQ3wWdPJJGk711TOeL5SywoHWFVog5T7vYEo9zw9ltVOcHy",
+      "address": "Jl. Alianyang No. 45, Singkawang Tengah",
+      "walletBalance": 125000,
+      "driverId": "driver-1",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=BudiKurir",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "user-driver-pending",
+      "name": "Indra Gunawan (Calon Driver)",
+      "email": "indra.kurir@paykajastip.id",
+      "phone": "085277889900",
+      "role": "driver",
+      "approvalStatus": "APPROVED",
+      "passwordHash": "$2b$08$4pQdkDwQ3wWdPJJGk711TOeL5SywoHWFVog5T7vYEo9zw9ltVOcHy",
+      "address": "Jl. Yohana Godang, Singkawang Barat",
+      "walletBalance": 0,
+      "driverId": "driver-pending",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=IndraKurir",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "user-merchant-1",
+      "name": "Haji Aman (Mitra Toko)",
+      "email": "miehaji@paykajastip.id",
+      "phone": "081344556677",
+      "role": "merchant",
+      "approvalStatus": "APPROVED",
+      "passwordHash": "$2b$08$4pQdkDwQ3wWdPJJGk711TOeL5SywoHWFVog5T7vYEo9zw9ltVOcHy",
+      "address": "Jl. Ahmad Yani No. 39, Singkawang Barat",
+      "merchantStoreId": "merchant-1",
+      "walletBalance": 850000,
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=HajiAman",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "user-merchant-pending",
+      "name": "Acai (Calon Mitra Toko)",
+      "email": "warung.acai@paykajastip.id",
+      "phone": "081299887766",
+      "role": "merchant",
+      "approvalStatus": "PENDING_APPROVAL",
+      "passwordHash": "$2b$08$4pQdkDwQ3wWdPJJGk711TOeL5SywoHWFVog5T7vYEo9zw9ltVOcHy",
+      "address": "Jl. Pasar Hongkong, Singkawang",
+      "merchantStoreId": "merchant-pending",
+      "walletBalance": 0,
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=WarungAcai",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "user-super-admin",
+      "name": "Super Admin PaykaJastip",
+      "email": "admin@paykajastip.id",
+      "phone": "081254007295",
+      "role": "super_admin",
+      "approvalStatus": "APPROVED",
+      "passwordHash": "$2b$08$UwKanm0iEaXq/lFOo/BKDeLa8avDwj5w08mOjBpYgQRbDMdln5uBO",
+      "address": "Kantor Pusat PAYKAJASTIP, Jl. Budi Utomo No. 1, Singkawang",
+      "walletBalance": 5000000,
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=PaykaSuperAdmin",
+      "createdAt": "2026-10-11T12:59:44.309Z"
+    }
+  ],
+  "drivers": [
+    {
+      "id": "driver-1",
+      "userId": "user-driver-1",
+      "name": "Budi Kurniawan",
+      "phone": "082155778899",
+      "motorcycleModel": "Honda Vario 160 Hitam",
+      "plateNumber": "KB 4521 CW",
+      "rating": 4.9,
+      "totalTrips": 184,
+      "approvalStatus": "APPROVED",
+      "isOnline": true,
+      "isBusy": false,
+      "currentLat": 0.9078,
+      "currentLng": 108.9868,
+      "lastLocationUpdate": "2026-10-11T13:00:19.612Z",
+      "walletBalance": 125000
+    },
+    {
+      "id": "driver-pending",
+      "userId": "user-driver-pending",
+      "name": "Indra Gunawan",
+      "phone": "085277889900",
+      "motorcycleModel": "Yamaha Mio M3 Merah",
+      "plateNumber": "KB 2841 SK",
+      "rating": 5,
+      "totalTrips": 0,
+      "approvalStatus": "APPROVED",
+      "isOnline": false,
+      "isBusy": false,
+      "currentLat": 0.9069,
+      "currentLng": 108.9866,
+      "walletBalance": 0
+    }
+  ],
+  "merchants": [
+    {
+      "id": "merchant-1",
+      "userId": "user-merchant-1",
+      "storeName": "Mie Kering Bakso Sapi Haji Aman",
+      "category": "kuliner",
+      "address": "Jl. Ahmad Yani No. 39, Singkawang Barat",
+      "subDistrict": "Singkawang Barat",
+      "lat": 0.912,
+      "lng": 108.984,
+      "phone": "081344556677",
+      "rating": 4.9,
+      "approvalStatus": "APPROVED",
+      "imageUrl": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80",
+      "description": "Kuliner legendaris mie keriting kering bakso sapi Singkawang sejak 1985.",
+      "isOpen": true,
+      "createdAt": "2026-10-11T12:59:44.243Z",
+      "items": [
+        {
+          "id": "item-201",
+          "name": "Mie Kering Spesial Komplit Sapi",
+          "price": 32000,
+          "description": "Mie halus, baso urat, babat, tahu baso, kuah kaldu terpisah",
+          "isAvailable": true
+        },
+        {
+          "id": "item-202",
+          "name": "Mie Pangsit Bakso Goreng",
+          "price": 28000,
+          "description": "Mie gurih dengan taburan daging cincang dan pangsit kuah",
+          "isAvailable": true
+        },
+        {
+          "id": "item-203",
+          "name": "Es Liang Teh Segar Khas Singkawang",
+          "price": 8000,
+          "description": "Minuman herbal pendingin manis sejuk",
+          "isAvailable": true
+        }
+      ]
+    },
+    {
+      "id": "merchant-2",
+      "userId": "user-merchant-2",
+      "storeName": "Choipan Thien Thien Lay",
+      "category": "kuliner",
+      "address": "Jl. Salam Diman No. 22, Singkawang Barat",
+      "subDistrict": "Singkawang Barat",
+      "lat": 0.907,
+      "lng": 108.989,
+      "phone": "081255443322",
+      "rating": 4.8,
+      "approvalStatus": "APPROVED",
+      "imageUrl": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80",
+      "description": "Choipan kukus kulit tipis lembut khas Singkawang aneka isian.",
+      "isOpen": true,
+      "createdAt": "2026-10-11T12:59:44.243Z",
+      "items": [
+        {
+          "id": "item-301",
+          "name": "Choipan Bengkuang Ebi (10 pcs)",
+          "price": 25000,
+          "description": "Kulit lembut tipis, bawang putih goreng, sambal pedas",
+          "isAvailable": true
+        },
+        {
+          "id": "item-302",
+          "name": "Choipan Kucai Wangi (10 pcs)",
+          "price": 25000,
+          "description": "Kucai hijau segar gurih aroma ebi",
+          "isAvailable": true
+        }
+      ]
+    },
+    {
+      "id": "merchant-3",
+      "userId": "user-merchant-3",
+      "storeName": "Pasar Beringin Tradisional Singkawang",
+      "category": "pasar",
+      "address": "Jl. Nusantara, Singkawang Barat",
+      "subDistrict": "Singkawang Barat",
+      "lat": 0.9055,
+      "lng": 108.9855,
+      "phone": "081288990011",
+      "rating": 4.7,
+      "approvalStatus": "APPROVED",
+      "imageUrl": "https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=600&q=80",
+      "description": "Pusat belanja sayur mayur, daging sapi/ayam segar, dan ikan pesisir Singkawang.",
+      "isOpen": true,
+      "createdAt": "2026-10-11T12:59:44.243Z",
+      "items": [
+        {
+          "id": "item-401",
+          "name": "Paket Sayuran Segar Sup & Tumis",
+          "price": 20000,
+          "description": "Wortel, buncis, kembang kol, sawi segar",
+          "isAvailable": true
+        },
+        {
+          "id": "item-402",
+          "name": "Daging Sapi Segar Pagi (500 gr)",
+          "price": 75000,
+          "description": "Potong pagi hari, higienis & halal",
+          "isAvailable": true
+        },
+        {
+          "id": "item-403",
+          "name": "Ikan Tenggiri Segar (1 kg)",
+          "price": 65000,
+          "description": "Ikan segar pesisir Singkawang",
+          "isAvailable": true
+        }
+      ]
+    },
+    {
+      "id": "merchant-4",
+      "userId": "user-merchant-4",
+      "storeName": "Apotek Kimia Farma Diponegoro",
+      "category": "apotek",
+      "address": "Jl. P. Diponegoro No. 88, Singkawang Barat",
+      "subDistrict": "Singkawang Barat",
+      "lat": 0.9075,
+      "lng": 108.9845,
+      "phone": "0562631234",
+      "rating": 4.8,
+      "approvalStatus": "APPROVED",
+      "imageUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
+      "description": "Layanan farmasi tebus resep dan obat bebas 24 jam.",
+      "isOpen": true,
+      "createdAt": "2026-10-11T12:59:44.243Z",
+      "items": [
+        {
+          "id": "item-601",
+          "name": "Tebus Resep Dokter & Obat Bebas",
+          "price": 50000,
+          "description": "Obat sesuai foto resep atau instruksi dokter",
+          "isAvailable": true
+        },
+        {
+          "id": "item-602",
+          "name": "Paket Vitamin & Imun Booster",
+          "price": 42000,
+          "description": "Multivitamin lengkap dan Vitamin C",
+          "isAvailable": true
+        }
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": "skw-barat",
+      "name": "Singkawang Barat (Pasar Melayu, Kuala)",
+      "lat": 0.9069,
+      "lng": 108.9866,
+      "baseDeliveryFee": 7000
+    },
+    {
+      "id": "skw-tengah",
+      "name": "Singkawang Tengah (Roban, Condong, Sekip)",
+      "lat": 0.9125,
+      "lng": 108.995,
+      "baseDeliveryFee": 8000
+    },
+    {
+      "id": "skw-selatan",
+      "name": "Singkawang Selatan (Sedau, Pasir Panjang)",
+      "lat": 0.852,
+      "lng": 108.965,
+      "baseDeliveryFee": 12000
+    },
+    {
+      "id": "skw-timur",
+      "name": "Singkawang Timur (Bagak Sahwa, Nyarumkop)",
+      "lat": 0.918,
+      "lng": 109.045,
+      "baseDeliveryFee": 13000
+    },
+    {
+      "id": "skw-utara",
+      "name": "Singkawang Utara (Semelagi, Sungai Garam)",
+      "lat": 0.965,
+      "lng": 108.995,
+      "baseDeliveryFee": 12000
+    }
+  ],
+  "orders": [
+    {
+      "id": "order-1791723608409",
+      "orderNumber": "PK-SKW-20261011-759",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "jastip_makanan",
+      "storeName": "Pasar Hongkong Singkawang",
+      "storeAddress": "Jl. Budi Utomo",
+      "storeLat": 0.908,
+      "storeLng": 108.987,
+      "deliveryAddress": "Jl. Tani Gg. Sejahtera No. 18",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.904,
+      "deliveryLng": 108.982,
+      "distanceKm": 0.7,
+      "items": [
+        {
+          "name": "Kwetiau Goreng Sapi",
+          "price": 28000,
+          "quantity": 1
+        }
+      ],
+      "shoppingEstimatedCost": 28000,
+      "shippingFee": 7000,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 40000,
+      "paymentMethod": "COD",
+      "paymentStatus": "PENDING",
+      "status": "DITAWARKAN_KE_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-11T13:00:08.409Z",
+      "updatedAt": "2026-10-11T13:00:08.410Z",
+      "currentOfferDriverId": "driver-1",
+      "offerExpiresAt": "2026-10-11T13:01:08.410Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-1791723625837",
+      "userId": "user-driver-pending",
+      "title": "Akun Driver Telah Disetujui!",
+      "message": "Selamat, akun driver Anda telah diverifikasi oleh Super Admin. Anda sekarang dapat mulai menerima orderan.",
+      "type": "system",
+      "createdAt": "2026-10-11T13:00:25.837Z",
+      "read": false
+    },
+    {
+      "id": "notif-1791723608410-offer",
+      "userId": "user-driver-1",
+      "title": "Tawaran Orderan Jastip Baru!",
+      "message": "Ada orderan dari Pasar Hongkong Singkawang ke Jl. Tani Gg. Sejahtera No. 18 (~0.1 km). Buka portal driver untuk menerima.",
+      "type": "driver",
+      "orderId": "order-1791723608409",
+      "createdAt": "2026-10-11T13:00:08.411Z",
+      "read": false
+    },
+    {
+      "id": "notif-init-1",
+      "userId": "user-pelanggan-1",
+      "title": "Selamat Datang di PAYKAJASTIP Singkawang!",
+      "message": "Layanan jasa titip belanja & antar barang kilat terpercaya se-Kota Singkawang.",
+      "type": "system",
+      "createdAt": "2026-10-11T12:59:44.310Z",
+      "read": false
+    }
+  ],
+  "walletTransactions": [],
+  "auditLogs": [
+    {
+      "id": "audit-1791723636906-k5w4",
+      "timestamp": "2026-10-11T13:00:36.906Z",
+      "action": "SETTING_LOGO_UPDATED",
+      "actorEmail": "admin@paykajastip.id",
+      "actorRole": "super_admin",
+      "details": "Logo PAYKAJASTIP diperbarui oleh Super Admin"
+    },
+    {
+      "id": "audit-1791723631647-irql",
+      "timestamp": "2026-10-11T13:00:31.647Z",
+      "action": "SETTING_WHATSAPP_UPDATED",
+      "actorEmail": "admin@paykajastip.id",
+      "actorRole": "super_admin",
+      "details": "Nomor WhatsApp Admin diperbarui menjadi 081254007295"
+    },
+    {
+      "id": "audit-1791723625837-nefh",
+      "timestamp": "2026-10-11T13:00:25.837Z",
+      "action": "APPROVAL_PROCESSED",
+      "actorEmail": "admin@paykajastip.id",
+      "actorRole": "super_admin",
+      "details": "Super Admin memproses persetujuan driver ID driver-pending -> APPROVED"
+    },
+    {
+      "id": "audit-1791723608421-j824",
+      "timestamp": "2026-10-11T13:00:08.421Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261011-759 senilai Rp 40.000 dibuat oleh Rusdiana (Pelanggan)"
+    },
+    {
+      "id": "audit-init-1",
+      "action": "SYSTEM_INITIALIZATION",
+      "actorEmail": "admin@paykajastip.id",
+      "actorRole": "super_admin",
+      "details": "Sistem PAYKAJASTIP diinisialisasi dengan konfigurasi operasional Singkawang",
+      "timestamp": "2026-10-11T12:59:44.310Z"
+    }
+  ],
+  "settings": {
+    "baseFare": 7000,
+    "perKmFare": 2500,
+    "expressSurcharge": 4000,
+    "defaultJastipFee": 5000,
+    "operationalCity": "Singkawang, Kalimantan Barat",
+    "contactSupportPhone": "0812-5400-7295",
+    "whatsappAdmin": "081254007295",
+    "logoUrl": "/icon.svg",
+    "bankTransfer": {
+      "enabled": true,
+      "bankName": "Bank BCA Singkawang",
+      "accountNumber": "8290-1122-3344",
+      "accountHolder": "PAYKAJASTIP SINGKAWANG PT",
+      "instructions": "Transfer sesuai total pesanan. Unggah bukti struk/screenshot transfer Anda agar admin memverifikasi pesanan."
+    },
+    "virtualAccount": {
+      "enabled": true,
+      "provider": "Bank Kalbar VA",
+      "vaNumber": "8801-0812-5400-001",
+      "instructions": "Bayar melalui ATM Bank Kalbar atau Mobile Banking Bank Kalbar ke nomor Virtual Account di atas."
+    },
+    "qris": {
+      "enabled": true,
+      "merchantName": "PAYKAJASTIP SINGKAWANG (NMID: ID102004881923)",
+      "qrisImageUrl": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=00020101021226670016ID.CO.PAYKAJASTIP.WWW01189360099800000000015204541153033605802ID5915PAYKAJASTIP+SKW6010SINGKAWANG610579123",
+      "instructions": "Scan kode QRIS menggunakan m-BCA, Livin Mandiri, GoPay, OVO, ShopeePay, Dana, atau aplikasi perbankan apa pun. Unggah bukti pembayaran."
+    },
+    "manualPayment": {
+      "enabled": true,
+      "cashierLocation": "Loket Resmi PAYKAJASTIP, Jl. Budi Utomo No. 1, Singkawang Barat",
+      "instructions": "Datang langsung ke loket kantor PAYKAJASTIP di Jl. Budi Utomo No. 1 untuk pembayaran tunai ke kasir."
+    },
+    "cod": {
+      "enabled": true,
+      "maxCodAmount": 300000,
+      "instructions": "Bayar tunai pas ke kurir ketika belanjaan sampai di tempat Anda. Pastikan uang pas disiapkan."
+    }
+  }
+}

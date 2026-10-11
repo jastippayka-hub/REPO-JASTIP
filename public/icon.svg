@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af" />
+      <stop offset="50%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="bagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background with rounded corners (safe zone compliant) -->
+  <rect width="512" height="512" rx="104" fill="url(#bgGrad)"/>
+
+  <!-- Subtle Speed Rings / Waves -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="8"/>
+  <circle cx="256" cy="256" r="170" fill="none" stroke="#ffffff" stroke-opacity="0.15" stroke-dasharray="24 16" stroke-width="4"/>
+
+  <!-- Center Delivery & Shopping Icon Group -->
+  <g filter="url(#shadow)" transform="translate(40, 20)">
+    <!-- Shopping Bag Body -->
+    <path d="M160 170 C160 145 178 125 200 125 L232 125 C254 125 272 145 272 170 L272 185 L160 185 Z" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+    
+    <!-- Fast Bag / Cart Shape -->
+    <path d="M120 180 L312 180 L296 350 C294 368 278 382 260 382 L172 382 C154 382 138 368 136 350 Z" fill="url(#bagGrad)"/>
+    
+    <!-- Lightning / Flash Speed Bolt on Bag in Singkawang Blue -->
+    <path d="M225 210 L185 275 L215 275 L205 345 L255 265 L225 265 Z" fill="#2563eb"/>
+
+    <!-- Courier Scooter / Speed element -->
+    <circle cx="340" cy="360" r="38" fill="#ffffff"/>
+    <circle cx="340" cy="360" r="22" fill="#0284c7"/>
+    <circle cx="340" cy="360" r="8" fill="#ffffff"/>
+    
+    <!-- Speed streaks -->
+    <line x1="80" y1="230" x2="110" y2="230" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+    <line x1="60" y1="270" x2="105" y2="270" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.75"/>
+    <line x1="90" y1="310" x2="115" y2="310" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Typography "PAYKA" at bottom -->
+  <text x="256" y="445" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="44" fill="#ffffff" letter-spacing="4">PAYKAJASTIP</text>
+  <text x="256" y="475" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="18" fill="#bae6fd" letter-spacing="2">SINGKAWANG</text>
+</svg>

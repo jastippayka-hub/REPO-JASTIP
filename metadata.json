@@ -1,0 +1,6 @@
+{
+  "name": "PAYKAJASTIP - Jastip, Belanja & Antar Barang Singkawang",
+  "description": "Aplikasi Progressive Web App (PWA) layanan jasa titip belanja, titip beli makanan dan oleh-oleh, serta pengantaran barang kilat kurir di Singkawang, Kalimantan Barat.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
