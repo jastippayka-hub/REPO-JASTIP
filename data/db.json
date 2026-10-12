@@ -81,6 +81,18 @@
       "walletBalance": 5000000,
       "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=PaykaSuperAdmin",
       "createdAt": "2026-10-11T12:59:44.309Z"
+    },
+    {
+      "id": "guest-1791789994334",
+      "name": "Pengunjung Tamu",
+      "email": "guest-1791789994334@paykajastip.id",
+      "phone": "081254009988",
+      "role": "pelanggan",
+      "approvalStatus": "APPROVED",
+      "walletBalance": 0,
+      "address": "Singkawang Tengah",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest1791789994334",
+      "createdAt": "2026-10-12T07:26:34.334Z"
     }
   ],
   "drivers": [
@@ -376,6 +388,14 @@
   "walletTransactions": [],
   "auditLogs": [
     {
+      "id": "audit-1791789994335-rbeg",
+      "timestamp": "2026-10-12T07:26:34.335Z",
+      "action": "GUEST_SESSION_CREATED",
+      "actorEmail": "guest-1791789994334@paykajastip.id",
+      "actorRole": "pelanggan",
+      "details": "Sesi Tamu (Guest) dibuat untuk Pengunjung Tamu (081254009988)"
+    },
+    {
       "id": "audit-1791723636906-k5w4",
       "timestamp": "2026-10-11T13:00:36.906Z",
       "action": "SETTING_LOGO_UPDATED",
@@ -417,6 +437,8 @@
     }
   ],
   "settings": {
+    "appName": "PAYKAJASTIP",
+    "appTagline": "Jastip, Belanja & Antar Barang di Singkawang",
     "baseFare": 7000,
     "perKmFare": 2500,
     "expressSurcharge": 4000,
