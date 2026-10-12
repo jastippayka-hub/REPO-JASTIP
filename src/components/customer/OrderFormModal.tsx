@@ -331,6 +331,16 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({
               <SingkawangMap
                 storePos={{ lat: storeLat, lng: storeLng, title: storeName || 'Toko' }}
                 deliveryPos={{ lat: deliveryLat, lng: deliveryLng, title: deliveryAddress }}
+                storeDraggable={true}
+                deliveryDraggable={true}
+                onStoreDragEnd={(lat, lng) => {
+                  setStoreLat(lat);
+                  setStoreLng(lng);
+                }}
+                onDeliveryDragEnd={(lat, lng) => {
+                  setDeliveryLat(lat);
+                  setDeliveryLng(lng);
+                }}
                 className="h-44 w-full"
                 zoom={13}
               />

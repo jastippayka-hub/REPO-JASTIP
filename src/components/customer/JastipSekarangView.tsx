@@ -257,7 +257,7 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
         )}
 
         {/* 1. TOKO / TEMPAT PEMBELIAN */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3.5">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
               <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
@@ -265,6 +265,9 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
               </span>
               Toko atau Lokasi Pembelian di Singkawang
             </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+              Titik Toko Terpisah
+            </span>
           </div>
 
           {/* Quick pick from registered merchants */}
@@ -317,6 +320,35 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
             </div>
           </div>
 
+          {/* Quick Presets for Popular Shopping Centers in Singkawang */}
+          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
+            <span className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              Pilihan Cepat Titik Pusat Belanja Singkawang (Klik untuk Memasang Titik Pin):
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { name: 'Pasar Hongkong', lat: 0.9065, lng: 108.9875 },
+                { name: 'Pasar Beringin', lat: 0.9090, lng: 108.9840 },
+                { name: 'Singkawang Grand Mall', lat: 0.8970, lng: 108.9750 },
+                { name: 'Kuliner Pasiran', lat: 0.9030, lng: 108.9820 },
+                { name: 'RSUD Abdul Aziz / Apotek', lat: 0.9045, lng: 108.9890 },
+              ].map(p => (
+                <button
+                  type="button"
+                  key={p.name}
+                  onClick={() => {
+                    setStoreLat(p.lat);
+                    setStoreLng(p.lng);
+                    if (!storeName.trim()) setStoreName(p.name);
+                  }}
+                  className="px-2 py-1 rounded-lg bg-white hover:bg-blue-50 border border-slate-200 text-[11px] font-semibold text-slate-700 transition"
+                >
+                  🏬 {p.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Google Maps Link Reference */}
           <div>
             <label className="block font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
@@ -332,6 +364,27 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
             {gmapsFeedback && (
               <p className="text-[11px] font-semibold text-blue-700 mt-1">{gmapsFeedback}</p>
             )}
+          </div>
+
+          {/* Decoupled Store Coordinates Display */}
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/70 border border-blue-200 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+              <span className="font-bold text-blue-950">
+                Koordinat Toko Saat Ini: {storeLat.toFixed(5)}, {storeLng.toFixed(5)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setMapPickerTarget('store');
+                const mapEl = document.getElementById('singkawang-interactive-map');
+                if (mapEl) mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }}
+              className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] shadow-sm transition"
+            >
+              🎯 Geser Pin Toko di Peta
+            </button>
           </div>
         </div>
 
@@ -416,14 +469,19 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
           </div>
         </div>
 
-        {/* 3. LOKASI PENGANTARAN & PETA OPENSTREETMAP */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3">
-          <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-              3
+        {/* 3. LOKASI PENGANTARAN & PETA INTERAKTIF OPENSTREETMAP */}
+        <div id="singkawang-interactive-map" className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3.5">
+          <div className="flex items-center justify-between">
+            <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
+                3
+              </span>
+              Lokasi Pengantaran & Peta Rute Singkawang
+            </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200">
+              Titik Antar Terpisah
             </span>
-            Lokasi Pengantaran & Titik Peta OpenStreetMap
-          </h3>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -454,38 +512,61 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
             </div>
           </div>
 
-          {/* Interactive Map with Mode selector */}
-          <div className="space-y-1.5 pt-1">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="font-semibold text-slate-600">
-                Pilih Titik di Peta Singkawang (Klik Peta untuk Mengatur Posisi):
-              </span>
+          {/* Interactive Map with Decoupled Mode selector and Free Dragging */}
+          <div className="space-y-2 pt-1">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <div className="text-[11px] font-medium text-slate-600">
+                <span className="font-bold text-slate-800">Mode Pemilihan Peta:</span> Klik tombol di samping atau geser pin langsung
+              </div>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setMapPickerTarget('store')}
-                  className={`px-2 py-0.5 rounded font-bold transition ${
-                    mapPickerTarget === 'store' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                  className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition shadow-xs ${
+                    mapPickerTarget === 'store'
+                      ? 'bg-blue-600 text-white ring-2 ring-blue-300'
+                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                   }`}
                 >
-                  🏬 Titik Toko
+                  <span>🏬</span>
+                  <span>Titik Toko (Pin Biru)</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setMapPickerTarget('delivery')}
-                  className={`px-2 py-0.5 rounded font-bold transition ${
-                    mapPickerTarget === 'delivery' ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-600'
+                  className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition shadow-xs ${
+                    mapPickerTarget === 'delivery'
+                      ? 'bg-red-600 text-white ring-2 ring-red-300'
+                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                   }`}
                 >
-                  📍 Titik Rumah
+                  <span>📍</span>
+                  <span>Titik Rumah (Pin Merah)</span>
                 </button>
               </div>
             </div>
 
+            <div className="p-2 rounded-xl bg-blue-50/60 border border-blue-100 text-[11px] text-blue-900 leading-relaxed flex items-start gap-1.5">
+              <span className="text-sm shrink-0">💡</span>
+              <span>
+                <strong>Bebas Digeser:</strong> Anda dapat menarik dan menggeser (drag) pin <strong>Toko (Biru)</strong> maupun pin <strong>Rumah (Merah)</strong> secara langsung pada peta Leaflet tanpa mempengaruhi teks nama toko atau alamat Anda.
+              </span>
+            </div>
+
             <SingkawangMap
               storePos={{ lat: storeLat, lng: storeLng, title: storeName || 'Lokasi Toko' }}
-              deliveryPos={{ lat: deliveryLat, lng: deliveryLng, title: deliveryAddress }}
+              deliveryPos={{ lat: deliveryLat, lng: deliveryLng, title: deliveryAddress || 'Lokasi Pengantaran' }}
               selectable={true}
+              storeDraggable={true}
+              deliveryDraggable={true}
+              onStoreDragEnd={(lat, lng) => {
+                setStoreLat(lat);
+                setStoreLng(lng);
+              }}
+              onDeliveryDragEnd={(lat, lng) => {
+                setDeliveryLat(lat);
+                setDeliveryLng(lng);
+              }}
               onSelectPos={(lat, lng) => {
                 if (mapPickerTarget === 'store') {
                   setStoreLat(lat);
@@ -495,12 +576,30 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
                   setDeliveryLng(lng);
                 }
               }}
-              className="h-56 w-full"
+              modeLabel={
+                mapPickerTarget === 'store'
+                  ? '🏬 Mode Aktif: Klik peta atau geser pin biru untuk menentukan Toko'
+                  : '📍 Mode Aktif: Klik peta atau geser pin merah untuk menentukan Rumah'
+              }
+              className="h-64 sm:h-72 w-full"
               zoom={13}
             />
-            <p className="text-[10px] text-slate-400">
-              Estimasi Jarak Rute Kurir: ~{distanceKm} km di Kota Singkawang
-            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-[11px]">
+              <div className="p-2 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <span className="text-slate-600">🏬 Titik Toko:</span>
+                <span className="font-bold text-slate-800">{storeLat.toFixed(5)}, {storeLng.toFixed(5)}</span>
+              </div>
+              <div className="p-2 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+                <span className="text-slate-600">📍 Titik Antar:</span>
+                <span className="font-bold text-slate-800">{deliveryLat.toFixed(5)}, {deliveryLng.toFixed(5)}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-100 text-xs font-semibold text-slate-700">
+              <span>Estimasi Jarak Rute Kurir:</span>
+              <span className="font-black text-blue-700">~{distanceKm} km (Singkawang)</span>
+            </div>
           </div>
 
           <div>
