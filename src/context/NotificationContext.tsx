@@ -43,13 +43,17 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
       try {
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.ready.then(reg => {
-            reg.showNotification(title, {
-              body,
-              icon: '/pwa-192x192.png',
-              badge: '/icon.svg',
+          navigator.serviceWorker.ready
+            .then(reg => {
+              return reg.showNotification(title, {
+                body,
+                icon: '/pwa-192x192.png',
+                badge: '/icon.svg',
+              });
+            })
+            .catch(err => {
+              console.debug('[NotificationContext] ServiceWorker showNotification skipped:', err);
             });
-          });
         } else {
           new Notification(title, {
             body,

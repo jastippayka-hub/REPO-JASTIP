@@ -38,9 +38,12 @@ export const CustomerHome: React.FC<CustomerHomeProps> = ({ onSelectOrder, onOpe
   const fetchStores = async () => {
     try {
       const res = await fetch('/api/stores');
-      if (res.ok) setStores(await res.json());
+      if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
+        const data = await res.json();
+        if (Array.isArray(data)) setStores(data);
+      }
     } catch (err) {
-      console.error('Failed fetching stores', err);
+      console.warn('[CustomerHome] Gagal mengambil daftar toko:', err);
     }
   };
 
@@ -48,13 +51,13 @@ export const CustomerHome: React.FC<CustomerHomeProps> = ({ onSelectOrder, onOpe
     if (!currentUser) return;
     try {
       const res = await authFetch('/api/orders');
-      if (res.ok) {
+      if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
         const data: Order[] = await res.json();
         const ongoing = data.filter(o => !['SELESAI', 'DIBATALKAN'].includes(o.status));
         setActiveOrders(ongoing);
       }
     } catch (err) {
-      console.error('Failed fetching orders', err);
+      console.warn('[CustomerHome] Gagal mengambil pesanan aktif:', err);
     }
   };
 
@@ -63,11 +66,11 @@ export const CustomerHome: React.FC<CustomerHomeProps> = ({ onSelectOrder, onOpe
     fetchActiveOrders();
 
     fetch('/api/settings/whatsapp')
-      .then(r => (r.ok ? r.json() : null))
+      .then(r => (r.ok && r.headers.get('content-type')?.includes('application/json') ? r.json() : null))
       .then(d => {
         if (d?.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
       })
-      .catch(err => console.debug('Failed loading wa settings', err));
+      .catch(err => console.debug('[CustomerHome] Gagal memuat nomor WhatsApp admin:', err));
 
     const interval = setInterval(fetchActiveOrders, 6000);
     return () => clearInterval(interval);

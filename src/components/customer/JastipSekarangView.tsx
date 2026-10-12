@@ -98,14 +98,14 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
   // Fetch merchants and payment settings
   useEffect(() => {
     fetch('/api/stores')
-      .then(r => (r.ok ? r.json() : []))
+      .then(r => (r.ok && r.headers.get('content-type')?.includes('application/json') ? r.json() : []))
       .then(d => { if (Array.isArray(d)) setMerchants(d); })
-      .catch(err => console.debug('Failed loading stores', err));
+      .catch(err => console.debug('[JastipSekarangView] Gagal memuat daftar toko:', err));
 
     fetch('/api/settings/payment')
-      .then(r => (r.ok ? r.json() : null))
+      .then(r => (r.ok && r.headers.get('content-type')?.includes('application/json') ? r.json() : null))
       .then(d => { if (d) setPaymentSettings(d); })
-      .catch(err => console.debug('Failed loading payment settings', err));
+      .catch(err => console.debug('[JastipSekarangView] Gagal memuat info pembayaran:', err));
   }, []);
 
   // Persist map state on change

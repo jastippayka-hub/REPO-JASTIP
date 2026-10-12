@@ -22,7 +22,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (saved) {
       try {
         return JSON.parse(saved);
-      } catch {
+      } catch (err) {
+        console.debug('[AuthContext] Cache profil pengguna tidak valid, mereset sesi:', err);
         return null;
       }
     }
@@ -61,7 +62,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           };
         }
         return { ok: true, status: res.status, data };
-      } catch {
+      } catch (err) {
+        console.debug('[AuthContext] Respons server bukan JSON valid:', err);
         return {
           ok: false,
           status: res.status,

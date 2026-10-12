@@ -40,11 +40,11 @@ export const OrderDetailView: React.FC<OrderDetailViewProps> = ({ order, onBack,
   // Fetch current WhatsApp Admin number from DB
   useEffect(() => {
     fetch('/api/settings/whatsapp')
-      .then(r => (r.ok ? r.json() : null))
+      .then(r => (r.ok && r.headers.get('content-type')?.includes('application/json') ? r.json() : null))
       .then(d => {
         if (d?.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
       })
-      .catch(err => console.debug('Failed loading wa settings', err));
+      .catch(err => console.debug('[OrderDetailView] Gagal memuat nomor WhatsApp admin:', err));
   }, []);
 
   // Status mapping

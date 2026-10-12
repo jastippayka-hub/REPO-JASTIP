@@ -22,12 +22,12 @@ export const PaykaWalletModal: React.FC<PaykaWalletModalProps> = ({ onClose }) =
     if (!currentUser) return;
     try {
       const res = await fetch(`/api/wallet/transactions/${currentUser.id}`);
-      if (res.ok) {
+      if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
         const data = await res.json();
         setTransactions(data);
       }
     } catch (err) {
-      console.error('Failed fetching transactions', err);
+      console.warn('[PaykaWallet] Gagal mengambil riwayat transaksi:', err);
     }
   };
 
@@ -58,7 +58,7 @@ export const PaykaWalletModal: React.FC<PaykaWalletModalProps> = ({ onClose }) =
         }),
       });
 
-      if (res.ok) {
+      if (res.ok && res.headers.get('content-type')?.includes('application/json')) {
         const data = await res.json();
         updateWalletBalance(data.balance);
         playChime('success');
@@ -66,9 +66,13 @@ export const PaykaWalletModal: React.FC<PaykaWalletModalProps> = ({ onClose }) =
         fetchTransactions();
         await refreshUser();
         setTimeout(() => setSuccessMsg(''), 4000);
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        setErrorMsg(errData?.error || 'Gagal memproses top up. Silakan coba kembali.');
       }
     } catch (err) {
-      console.error('Topup failed', err);
+      console.warn('[PaykaWallet] Gagal top up:', err);
+      setErrorMsg('Koneksi ke server gagal. Periksa jaringan internet Anda.');
     } finally {
       setIsSubmitting(false);
     }

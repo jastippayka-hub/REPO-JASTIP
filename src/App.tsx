@@ -54,22 +54,22 @@ function AppContent() {
   const fetchDynamicSettings = async () => {
     try {
       const lRes = await fetch('/api/settings/logo');
-      if (lRes.ok) {
+      if (lRes.ok && lRes.headers.get('content-type')?.includes('application/json')) {
         const d = await lRes.json();
         if (d?.logoUrl) setLogoUrl(d.logoUrl);
       }
-    } catch {
-      // Ignored transient network drop
+    } catch (err) {
+      console.debug('[App] Gagal memuat logo dinamis:', err);
     }
 
     try {
       const wRes = await fetch('/api/settings/whatsapp');
-      if (wRes.ok) {
+      if (wRes.ok && wRes.headers.get('content-type')?.includes('application/json')) {
         const d = await wRes.json();
         if (d?.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
       }
-    } catch {
-      // Ignored transient network drop
+    } catch (err) {
+      console.debug('[App] Gagal memuat kontak WhatsApp admin:', err);
     }
   };
 
