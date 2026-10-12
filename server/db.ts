@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
-import {
+import type {
   User,
   DriverProfile,
   MerchantProfile,
@@ -11,7 +12,10 @@ import {
   WalletTransaction,
   AuditLog,
   AppSettings,
-} from '../src/types/index.js';
+} from '../src/types/index.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 interface DatabaseSchema {
   users: User[];
@@ -25,7 +29,14 @@ interface DatabaseSchema {
   settings: AppSettings;
 }
 
-const DB_FILE_PATH = path.resolve(process.cwd(), 'data', 'db.json');
+// Resilient path resolution for data/db.json
+const resolvedDbPaths = [
+  path.resolve(process.cwd(), 'data', 'db.json'),
+  path.resolve(__dirname, '..', 'data', 'db.json'),
+  path.resolve(__dirname, 'data', 'db.json'),
+];
+const existingDbPath = resolvedDbPaths.find((p) => fs.existsSync(p));
+const DB_FILE_PATH = existingDbPath || resolvedDbPaths[0];
 
 const defaultZones: SubDistrictZone[] = [
   { id: 'skw-barat', name: 'Singkawang Barat (Pasar Melayu, Kuala)', lat: 0.9069, lng: 108.9866, baseDeliveryFee: 7000 },

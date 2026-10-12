@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext.js';
 import { SingkawangMap } from '../SingkawangMap.js';
 import { parseGoogleMapsInput } from '../../utils/geo.js';
 import { playChime } from '../../utils/audio.js';
+import {
+  saveMapState,
+  loadMapState,
+  clearMapState,
+  DEFAULT_SINGKAWANG_MAP_STATE,
+} from '../../utils/mapPersistence.js';
 import {
   Order,
   OrderServiceType,
@@ -48,22 +54,28 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
   const [selectedMerchantId, setSelectedMerchantId] = useState<string>(initialMerchant?.id || '');
 
   // Form State
+  // Map State Persistence: check saved coordinates if not from initial merchant
+  const savedMapState = useMemo(() => {
+    if (initialMerchant) return null;
+    return loadMapState();
+  }, [initialMerchant]);
+
   const [serviceType, setServiceType] = useState<OrderServiceType>('jastip_makanan');
-  const [storeName, setStoreName] = useState(initialMerchant?.storeName || '');
-  const [storeAddress, setStoreAddress] = useState(initialMerchant?.address || 'Singkawang Barat');
-  const [storeLat, setStoreLat] = useState(initialMerchant?.lat || 0.9080);
-  const [storeLng, setStoreLng] = useState(initialMerchant?.lng || 108.9870);
+  const [storeName, setStoreName] = useState(initialMerchant?.storeName || savedMapState?.storeName || '');
+  const [storeAddress, setStoreAddress] = useState(initialMerchant?.address || savedMapState?.storeAddress || 'Singkawang Barat');
+  const [storeLat, setStoreLat] = useState(initialMerchant?.lat || savedMapState?.storeLat || DEFAULT_SINGKAWANG_MAP_STATE.storeLat);
+  const [storeLng, setStoreLng] = useState(initialMerchant?.lng || savedMapState?.storeLng || DEFAULT_SINGKAWANG_MAP_STATE.storeLng);
   const [googleMapsUrl, setGoogleMapsUrl] = useState('');
   const [gmapsFeedback, setGmapsFeedback] = useState<string | null>(null);
 
   // Delivery destination
   const [deliveryAddress, setDeliveryAddress] = useState(
-    currentUser?.address || 'Jl. Tani Gg. Sejahtera No. 18, Singkawang Barat'
+    currentUser?.address || savedMapState?.deliveryAddress || DEFAULT_SINGKAWANG_MAP_STATE.deliveryAddress || 'Jl. Tani Gg. Sejahtera No. 18, Singkawang Barat'
   );
-  const [deliverySubDistrict, setDeliverySubDistrict] = useState('Singkawang Barat');
-  const [deliveryLat, setDeliveryLat] = useState(0.9040);
-  const [deliveryLng, setDeliveryLng] = useState(108.9820);
-  const [mapPickerTarget, setMapPickerTarget] = useState<'store' | 'delivery'>('delivery');
+  const [deliverySubDistrict, setDeliverySubDistrict] = useState(savedMapState?.deliverySubDistrict || 'Singkawang Barat');
+  const [deliveryLat, setDeliveryLat] = useState(savedMapState?.deliveryLat || DEFAULT_SINGKAWANG_MAP_STATE.deliveryLat);
+  const [deliveryLng, setDeliveryLng] = useState(savedMapState?.deliveryLng || DEFAULT_SINGKAWANG_MAP_STATE.deliveryLng);
+  const [mapPickerTarget, setMapPickerTarget] = useState<'store' | 'delivery'>(savedMapState?.mapPickerTarget || 'delivery');
 
   // Items
   const [items, setItems] = useState<{ id: string; name: string; price: number; quantity: number; notes: string }[]>(
@@ -86,15 +98,49 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
   // Fetch merchants and payment settings
   useEffect(() => {
     fetch('/api/stores')
-      .then(r => r.json())
-      .then(d => setMerchants(d))
-      .catch(console.error);
+      .then(r => (r.ok ? r.json() : []))
+      .then(d => { if (Array.isArray(d)) setMerchants(d); })
+      .catch(err => console.debug('Failed loading stores', err));
 
     fetch('/api/settings/payment')
-      .then(r => r.json())
-      .then(d => setPaymentSettings(d))
-      .catch(console.error);
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (d) setPaymentSettings(d); })
+      .catch(err => console.debug('Failed loading payment settings', err));
   }, []);
+
+  // Persist map state on change
+  useEffect(() => {
+    saveMapState({
+      storeLat,
+      storeLng,
+      storeName,
+      storeAddress,
+      deliveryLat,
+      deliveryLng,
+      deliveryAddress,
+      deliverySubDistrict,
+      mapPickerTarget,
+    });
+  }, [
+    storeLat,
+    storeLng,
+    storeName,
+    storeAddress,
+    deliveryLat,
+    deliveryLng,
+    deliveryAddress,
+    deliverySubDistrict,
+    mapPickerTarget,
+  ]);
+
+  const handleResetMapCoordinates = () => {
+    clearMapState();
+    setStoreLat(DEFAULT_SINGKAWANG_MAP_STATE.storeLat);
+    setStoreLng(DEFAULT_SINGKAWANG_MAP_STATE.storeLng);
+    setDeliveryLat(DEFAULT_SINGKAWANG_MAP_STATE.deliveryLat);
+    setDeliveryLng(DEFAULT_SINGKAWANG_MAP_STATE.deliveryLng);
+    setDeliverySubDistrict('Singkawang Barat');
+  };
 
   // Handle Google Maps Link parsing
   const handleGmapsInput = (val: string) => {
@@ -515,8 +561,17 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
           {/* Interactive Map with Decoupled Mode selector and Free Dragging */}
           <div className="space-y-2 pt-1">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-              <div className="text-[11px] font-medium text-slate-600">
-                <span className="font-bold text-slate-800">Mode Pemilihan Peta:</span> Klik tombol di samping atau geser pin langsung
+              <div className="text-[11px] font-medium text-slate-600 flex items-center gap-1.5 flex-wrap">
+                <span className="font-bold text-slate-800">Mode Peta:</span>
+                <span>Klik tombol atau geser pin langsung.</span>
+                <button
+                  type="button"
+                  onClick={handleResetMapCoordinates}
+                  title="Reset titik koordinat ke setelan awal Singkawang"
+                  className="ml-auto text-[10px] font-semibold text-slate-500 hover:text-red-600 underline transition"
+                >
+                  🔄 Reset Titik Koordinat
+                </button>
               </div>
               <div className="flex gap-2">
                 <button
@@ -559,6 +614,8 @@ export const JastipSekarangView: React.FC<JastipSekarangViewProps> = ({
               selectable={true}
               storeDraggable={true}
               deliveryDraggable={true}
+              persistKey="jastip_sekarang"
+              showTileToggle={true}
               onStoreDragEnd={(lat, lng) => {
                 setStoreLat(lat);
                 setStoreLng(lng);

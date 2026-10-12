@@ -3,6 +3,7 @@ import { OrderServiceType, PaymentMethod, StoreCatalog, OrderItem, Order } from 
 import { useAuth } from '../../context/AuthContext.js';
 import { SingkawangMap } from '../SingkawangMap.js';
 import { playChime } from '../../utils/audio.js';
+import { loadMapState } from '../../utils/mapPersistence.js';
 import {
   X,
   Plus,
@@ -34,7 +35,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({
   onClose,
   onOrderCreated,
 }) => {
-  const { currentUser, refreshUser } = useAuth();
+  const { currentUser, refreshUser, authFetch } = useAuth();
 
   const [serviceType, setServiceType] = useState<OrderServiceType>(
     initialStore
@@ -51,12 +52,15 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({
   const [storeLat, setStoreLat] = useState(initialStore ? initialStore.lat : 0.9080);
   const [storeLng, setStoreLng] = useState(initialStore ? initialStore.lng : 108.9870);
 
+  // Load persisted map state if available
+  const savedState = loadMapState();
+
   const [deliveryAddress, setDeliveryAddress] = useState(
-    currentUser?.address || 'Jl. Tani Gg. Sejahtera No. 18, Singkawang Barat'
+    currentUser?.address || savedState?.deliveryAddress || 'Jl. Tani Gg. Sejahtera No. 18, Singkawang Barat'
   );
-  const [deliverySubDistrict, setDeliverySubDistrict] = useState('Singkawang Barat');
-  const [deliveryLat, setDeliveryLat] = useState(0.9040);
-  const [deliveryLng, setDeliveryLng] = useState(108.9820);
+  const [deliverySubDistrict, setDeliverySubDistrict] = useState(savedState?.deliverySubDistrict || 'Singkawang Barat');
+  const [deliveryLat, setDeliveryLat] = useState(savedState?.deliveryLat || 0.9040);
+  const [deliveryLng, setDeliveryLng] = useState(savedState?.deliveryLng || 108.9820);
 
   const [customerName, setCustomerName] = useState(currentUser?.name || '');
   const [customerPhone, setCustomerPhone] = useState(currentUser?.phone || '');
@@ -174,21 +178,30 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({
         isExpress,
       };
 
-      const res = await fetch('/api/orders', {
+      const res = await authFetch('/api/orders', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Gagal membuat pesanan');
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Gagal membuat pesanan');
+        }
+        playChime('order');
+        await refreshUser();
+        onOrderCreated(data as Order);
+        return;
       }
 
-      const createdOrder: Order = await res.json();
-      playChime('order');
-      await refreshUser();
-      onOrderCreated(createdOrder);
+      if (!res.ok) {
+        throw new Error(`Gagal membuat pesanan (Status ${res.status}). Pastikan Anda sudah login.`);
+      }
     } catch (err: any) {
       setErrorMsg(err.message || 'Terjadi kesalahan');
     } finally {
@@ -333,6 +346,7 @@ export const OrderFormModal: React.FC<OrderFormModalProps> = ({
                 deliveryPos={{ lat: deliveryLat, lng: deliveryLng, title: deliveryAddress }}
                 storeDraggable={true}
                 deliveryDraggable={true}
+                persistKey="order_form_modal"
                 onStoreDragEnd={(lat, lng) => {
                   setStoreLat(lat);
                   setStoreLng(lng);

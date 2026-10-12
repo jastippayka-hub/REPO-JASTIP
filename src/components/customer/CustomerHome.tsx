@@ -63,11 +63,11 @@ export const CustomerHome: React.FC<CustomerHomeProps> = ({ onSelectOrder, onOpe
     fetchActiveOrders();
 
     fetch('/api/settings/whatsapp')
-      .then(r => r.json())
+      .then(r => (r.ok ? r.json() : null))
       .then(d => {
-        if (d.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
+        if (d?.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
       })
-      .catch(console.error);
+      .catch(err => console.debug('Failed loading wa settings', err));
 
     const interval = setInterval(fetchActiveOrders, 6000);
     return () => clearInterval(interval);

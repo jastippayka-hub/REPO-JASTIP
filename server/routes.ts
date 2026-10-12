@@ -1,7 +1,13 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
-import { db } from './db.js';
+import { db } from './db.ts';
 import {
+  calculateDistanceKm,
+  validateCoordinate,
+  validateOrderCoordinates,
+} from './validation.ts';
+import type {
   User,
   UserRole,
   DriverProfile,
@@ -11,7 +17,7 @@ import {
   PaymentMethod,
   PaymentStatus,
   OrderServiceType,
-} from '../src/types/index.js';
+} from '../src/types/index.ts';
 
 export const apiRouter = Router();
 
@@ -77,21 +83,6 @@ function requireApproved(req: AuthenticatedRequest, res: Response, next: NextFun
     });
   }
   next();
-}
-
-// Distance helper using Haversine formula (km)
-function calculateDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // Earth radius km
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return Math.round(R * c * 10) / 10;
 }
 
 // Auto dispatch helper
@@ -385,15 +376,25 @@ apiRouter.post('/orders', authenticateToken, requireRole(['pelanggan', 'super_ad
     return res.status(400).json({ error: 'Nama toko, alamat tujuan, dan barang titipan wajib diisi.' });
   }
 
+  // Validate coordinates strictly on backend
+  const coordValidation = validateOrderCoordinates({
+    storeLat,
+    storeLng,
+    deliveryLat,
+    deliveryLng,
+  });
+
+  if (!coordValidation.valid) {
+    return res.status(400).json({ error: coordValidation.error });
+  }
+
+  const storeLatitude = coordValidation.storeLat;
+  const storeLongitude = coordValidation.storeLng;
+  const destLatitude = coordValidation.deliveryLat;
+  const destLongitude = coordValidation.deliveryLng;
+  const distKm = coordValidation.distanceKm;
+
   const settings = db.getSettings();
-
-  // Calculate distance
-  const storeLatitude = parseFloat(storeLat) || 0.9080;
-  const storeLongitude = parseFloat(storeLng) || 108.9870;
-  const destLatitude = parseFloat(deliveryLat) || 0.9040;
-  const destLongitude = parseFloat(deliveryLng) || 108.9820;
-
-  const distKm = Math.max(0.5, calculateDistanceKm(storeLatitude, storeLongitude, destLatitude, destLongitude));
 
   // Tariff calculation from admin settings
   let shippingFee = settings.baseFare;
@@ -620,12 +621,17 @@ apiRouter.post('/drivers/:id/location', authenticateToken, (req: AuthenticatedRe
   }
 
   const { lat, lng } = req.body;
-  const latitude = parseFloat(lat);
-  const longitude = parseFloat(lng);
+  const coordCheck = validateCoordinate(lat, lng, 'GPS Kurir', {
+    enforceRegionalBounds: true,
+    maxDistanceFromSingkawangKm: 150,
+  });
 
-  if (isNaN(latitude) || isNaN(longitude)) {
-    return res.status(400).json({ error: 'Koordinat GPS latitude dan longitude tidak valid.' });
+  if (!coordCheck.valid) {
+    return res.status(400).json({ error: coordCheck.error });
   }
+
+  const latitude = coordCheck.lat;
+  const longitude = coordCheck.lng;
 
   const now = new Date().toISOString();
   const updatedDriver = db.updateDriver(driver.id, {
@@ -759,6 +765,17 @@ apiRouter.get('/merchant/my-store', authenticateToken, requireRole(['merchant'])
 apiRouter.patch('/merchant/my-store', authenticateToken, requireRole(['merchant']), (req: AuthenticatedRequest, res: Response) => {
   const merchant = db.getMerchantByUserId(req.user!.id);
   if (!merchant) return res.status(404).json({ error: 'Toko tidak ditemukan.' });
+
+  // Validate coordinates if provided
+  if (req.body.lat !== undefined || req.body.lng !== undefined) {
+    const coordCheck = validateCoordinate(req.body.lat, req.body.lng, 'Lokasi Toko Mitra', {
+      enforceRegionalBounds: true,
+      maxDistanceFromSingkawangKm: 80,
+    });
+    if (!coordCheck.valid) {
+      return res.status(400).json({ error: coordCheck.error });
+    }
+  }
 
   const updated = db.updateMerchant(merchant.id, req.body);
   res.json(updated);

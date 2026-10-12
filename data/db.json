@@ -104,14 +104,14 @@
       "motorcycleModel": "Honda Vario 160 Hitam",
       "plateNumber": "KB 4521 CW",
       "rating": 4.9,
-      "totalTrips": 184,
+      "totalTrips": 185,
       "approvalStatus": "APPROVED",
-      "isOnline": true,
+      "isOnline": false,
       "isBusy": false,
-      "currentLat": 0.9078,
-      "currentLng": 108.9868,
-      "lastLocationUpdate": "2026-10-11T13:00:19.612Z",
-      "walletBalance": 125000
+      "currentLat": 0.9085,
+      "currentLng": 108.988,
+      "lastLocationUpdate": "2026-10-12T07:56:45.881Z",
+      "walletBalance": 134450
     },
     {
       "id": "driver-pending",
@@ -317,6 +317,146 @@
   ],
   "orders": [
     {
+      "id": "order-1791791766791",
+      "orderNumber": "PK-SKW-20261012-560",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "jastip_makanan",
+      "storeName": "Pasar Hongkong Singkawang",
+      "storeLat": 0.908,
+      "storeLng": 108.987,
+      "deliveryAddress": "Jl. Tani Gg. Sejahtera",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.904,
+      "deliveryLng": 108.982,
+      "distanceKm": 0.7,
+      "items": [
+        {
+          "name": "Kwetiau Goreng Singkawang",
+          "price": 20000,
+          "quantity": 1
+        }
+      ],
+      "shoppingEstimatedCost": 20000,
+      "shippingFee": 7000,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 32000,
+      "paymentMethod": "COD",
+      "paymentStatus": "PENDING",
+      "status": "MENUNGGU_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-12T07:56:06.791Z",
+      "updatedAt": "2026-10-12T07:56:06.792Z"
+    },
+    {
+      "id": "order-1791791752810",
+      "orderNumber": "PK-SKW-20261012-394",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "jastip_makanan",
+      "storeName": "Pasar Hongkong Singkawang",
+      "storeLat": 0.908,
+      "storeLng": 108.987,
+      "deliveryAddress": "Jl. Tani Gg. Sejahtera",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.904,
+      "deliveryLng": 108.982,
+      "distanceKm": 0.7,
+      "items": [
+        {
+          "name": "Kwetiau Goreng Singkawang",
+          "price": 20000,
+          "quantity": 1
+        }
+      ],
+      "shoppingEstimatedCost": 20000,
+      "shippingFee": 7000,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 32000,
+      "paymentMethod": "COD",
+      "paymentStatus": "PENDING",
+      "status": "MENUNGGU_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-12T07:55:52.810Z",
+      "updatedAt": "2026-10-12T07:55:52.810Z"
+    },
+    {
+      "id": "order-1791791752785",
+      "orderNumber": "PK-SKW-20261012-243",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "jastip_makanan",
+      "storeName": "Toko Test",
+      "storeLat": -6.2088,
+      "storeLng": 106.8456,
+      "deliveryAddress": "Rumah Test",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.904,
+      "deliveryLng": 108.982,
+      "distanceKm": 825.7,
+      "items": [
+        {
+          "name": "Kwetiau",
+          "price": 15000,
+          "quantity": 1
+        }
+      ],
+      "shoppingEstimatedCost": 15000,
+      "shippingFee": 2066250,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 2086250,
+      "paymentMethod": "QRIS",
+      "paymentStatus": "PENDING",
+      "status": "MENUNGGU_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-12T07:55:52.785Z",
+      "updatedAt": "2026-10-12T07:55:52.785Z"
+    },
+    {
+      "id": "order-1791791752755",
+      "orderNumber": "PK-SKW-20261012-867",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "jastip_makanan",
+      "storeName": "Toko Test",
+      "storeLat": 999,
+      "storeLng": 108.987,
+      "deliveryAddress": "Rumah Test",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.904,
+      "deliveryLng": 108.982,
+      "distanceKm": 9107.3,
+      "items": [
+        {
+          "name": "Kwetiau",
+          "price": 15000,
+          "quantity": 1
+        }
+      ],
+      "shoppingEstimatedCost": 15000,
+      "shippingFee": 22770250,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 22790250,
+      "paymentMethod": "QRIS",
+      "paymentStatus": "PENDING",
+      "status": "MENUNGGU_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-12T07:55:52.755Z",
+      "updatedAt": "2026-10-12T07:55:52.756Z"
+    },
+    {
       "id": "order-1791723608409",
       "orderNumber": "PK-SKW-20261011-759",
       "userId": "user-pelanggan-1",
@@ -345,17 +485,73 @@
       "isExpress": false,
       "totalAmount": 40000,
       "paymentMethod": "COD",
-      "paymentStatus": "PENDING",
-      "status": "DITAWARKAN_KE_DRIVER",
+      "paymentStatus": "PAID",
+      "status": "SELESAI",
       "customerNotes": "",
       "rejectedDriverIds": [],
       "createdAt": "2026-10-11T13:00:08.409Z",
-      "updatedAt": "2026-10-11T13:00:08.410Z",
-      "currentOfferDriverId": "driver-1",
-      "offerExpiresAt": "2026-10-11T13:01:08.410Z"
+      "updatedAt": "2026-10-12T07:31:06.863Z",
+      "driverId": "driver-1",
+      "driverName": "Budi Kurniawan",
+      "driverPhone": "082155778899",
+      "driverPlate": "KB 4521 CW",
+      "driverLat": 0.9431129,
+      "driverLng": 108.9803397,
+      "driverLastLocationUpdate": "2026-10-12T07:31:06.424Z",
+      "completedAt": "2026-10-12T07:31:06.862Z"
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1791791766792-nodriver",
+      "userId": "user-pelanggan-1",
+      "title": "Menunggu Kurir Singkawang",
+      "message": "Pesanan PK-SKW-20261012-560 sedang menunggu kurir yang tersedia di area Singkawang.",
+      "type": "order",
+      "orderId": "order-1791791766791",
+      "createdAt": "2026-10-12T07:56:06.792Z",
+      "read": false
+    },
+    {
+      "id": "notif-1791791752810-nodriver",
+      "userId": "user-pelanggan-1",
+      "title": "Menunggu Kurir Singkawang",
+      "message": "Pesanan PK-SKW-20261012-394 sedang menunggu kurir yang tersedia di area Singkawang.",
+      "type": "order",
+      "orderId": "order-1791791752810",
+      "createdAt": "2026-10-12T07:55:52.810Z",
+      "read": false
+    },
+    {
+      "id": "notif-1791791752786-nodriver",
+      "userId": "user-pelanggan-1",
+      "title": "Menunggu Kurir Singkawang",
+      "message": "Pesanan PK-SKW-20261012-243 sedang menunggu kurir yang tersedia di area Singkawang.",
+      "type": "order",
+      "orderId": "order-1791791752785",
+      "createdAt": "2026-10-12T07:55:52.786Z",
+      "read": false
+    },
+    {
+      "id": "notif-1791791752756-nodriver",
+      "userId": "user-pelanggan-1",
+      "title": "Menunggu Kurir Singkawang",
+      "message": "Pesanan PK-SKW-20261012-867 sedang menunggu kurir yang tersedia di area Singkawang.",
+      "type": "order",
+      "orderId": "order-1791791752755",
+      "createdAt": "2026-10-12T07:55:52.756Z",
+      "read": false
+    },
+    {
+      "id": "notif-1791790246014-accepted",
+      "userId": "user-pelanggan-1",
+      "title": "Kurir Menuju Toko!",
+      "message": "Kurir Budi Kurniawan (KB 4521 CW) menerima pesanan dan sedang meluncur ke Pasar Hongkong Singkawang.",
+      "type": "driver",
+      "orderId": "order-1791723608409",
+      "createdAt": "2026-10-12T07:30:46.014Z",
+      "read": false
+    },
     {
       "id": "notif-1791723625837",
       "userId": "user-driver-pending",
@@ -373,7 +569,7 @@
       "type": "driver",
       "orderId": "order-1791723608409",
       "createdAt": "2026-10-11T13:00:08.411Z",
-      "read": false
+      "read": true
     },
     {
       "id": "notif-init-1",
@@ -385,8 +581,90 @@
       "read": false
     }
   ],
-  "walletTransactions": [],
+  "walletTransactions": [
+    {
+      "id": "tx-1791790266862",
+      "userId": "user-driver-1",
+      "type": "EARNING",
+      "amount": 9450,
+      "description": "Upah antar pesanan PK-SKW-20261011-759 (85% ongkir + 70% fee jastip)",
+      "status": "SUCCESS",
+      "createdAt": "2026-10-12T07:31:06.862Z"
+    }
+  ],
   "auditLogs": [
+    {
+      "id": "audit-1791791766798-h1mv",
+      "timestamp": "2026-10-12T07:56:06.798Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261012-560 senilai Rp 32.000 dibuat oleh Rusdiana (Pelanggan)"
+    },
+    {
+      "id": "audit-1791791752811-fpcc",
+      "timestamp": "2026-10-12T07:55:52.811Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261012-394 senilai Rp 32.000 dibuat oleh Rusdiana (Pelanggan)"
+    },
+    {
+      "id": "audit-1791791752786-qurt",
+      "timestamp": "2026-10-12T07:55:52.786Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261012-243 senilai Rp 2.086.250 dibuat oleh Rusdiana (Pelanggan)"
+    },
+    {
+      "id": "audit-1791791752765-x7dn",
+      "timestamp": "2026-10-12T07:55:52.765Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261012-867 senilai Rp 22.790.250 dibuat oleh Rusdiana (Pelanggan)"
+    },
+    {
+      "id": "audit-1791790266863-llrg",
+      "timestamp": "2026-10-12T07:31:06.863Z",
+      "action": "ORDER_STATUS_UPDATED",
+      "actorEmail": "budi.kurir@paykajastip.id",
+      "actorRole": "driver",
+      "details": "Status pesanan PK-SKW-20261011-759 diubah menjadi SELESAI"
+    },
+    {
+      "id": "audit-1791790260538-o8ec",
+      "timestamp": "2026-10-12T07:31:00.538Z",
+      "action": "ORDER_STATUS_UPDATED",
+      "actorEmail": "budi.kurir@paykajastip.id",
+      "actorRole": "driver",
+      "details": "Status pesanan PK-SKW-20261011-759 diubah menjadi SEDANG_DIBELANJAKAN"
+    },
+    {
+      "id": "audit-1791790260088-w8g8",
+      "timestamp": "2026-10-12T07:31:00.088Z",
+      "action": "ORDER_STATUS_UPDATED",
+      "actorEmail": "budi.kurir@paykajastip.id",
+      "actorRole": "driver",
+      "details": "Status pesanan PK-SKW-20261011-759 diubah menjadi SEDANG_DIBELANJAKAN"
+    },
+    {
+      "id": "audit-1791790258813-3q9z",
+      "timestamp": "2026-10-12T07:30:58.813Z",
+      "action": "ORDER_STATUS_UPDATED",
+      "actorEmail": "budi.kurir@paykajastip.id",
+      "actorRole": "driver",
+      "details": "Status pesanan PK-SKW-20261011-759 diubah menjadi SEDANG_DIBELANJAKAN"
+    },
+    {
+      "id": "audit-1791790256139-4ju8",
+      "timestamp": "2026-10-12T07:30:56.139Z",
+      "action": "ORDER_STATUS_UPDATED",
+      "actorEmail": "budi.kurir@paykajastip.id",
+      "actorRole": "driver",
+      "details": "Status pesanan PK-SKW-20261011-759 diubah menjadi DRIVER_MENUJU_LOKASI"
+    },
     {
       "id": "audit-1791789994335-rbeg",
       "timestamp": "2026-10-12T07:26:34.335Z",

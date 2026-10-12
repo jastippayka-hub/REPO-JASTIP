@@ -51,16 +51,26 @@ function AppContent() {
   const [logoUrl, setLogoUrl] = useState('/icon.svg');
   const [whatsappAdmin, setWhatsappAdmin] = useState('081254007295');
 
-  const fetchDynamicSettings = () => {
-    fetch('/api/settings/logo')
-      .then(r => r.json())
-      .then(d => { if (d.logoUrl) setLogoUrl(d.logoUrl); })
-      .catch(console.error);
+  const fetchDynamicSettings = async () => {
+    try {
+      const lRes = await fetch('/api/settings/logo');
+      if (lRes.ok) {
+        const d = await lRes.json();
+        if (d?.logoUrl) setLogoUrl(d.logoUrl);
+      }
+    } catch {
+      // Ignored transient network drop
+    }
 
-    fetch('/api/settings/whatsapp')
-      .then(r => r.json())
-      .then(d => { if (d.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin); })
-      .catch(console.error);
+    try {
+      const wRes = await fetch('/api/settings/whatsapp');
+      if (wRes.ok) {
+        const d = await wRes.json();
+        if (d?.whatsappAdmin) setWhatsappAdmin(d.whatsappAdmin);
+      }
+    } catch {
+      // Ignored transient network drop
+    }
   };
 
   useEffect(() => {

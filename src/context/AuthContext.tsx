@@ -43,23 +43,83 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Authenticated fetch helper
-  const authFetch = async (url: string, options: RequestInit = {}) => {
-    const headers = new Headers(options.headers || {});
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
+  // Helper to parse responses safely and handle HTML / proxy errors
+  const parseApiResponse = async <T = any,>(
+    res: Response,
+    fallbackErrMsg: string
+  ): Promise<{ ok: boolean; status: number; data?: T; error?: string }> => {
+    const contentType = res.headers.get('content-type') || '';
+
+    if (contentType.includes('application/json')) {
+      try {
+        const data = await res.json();
+        if (!res.ok) {
+          return {
+            ok: false,
+            status: res.status,
+            error: data?.error || `${fallbackErrMsg} (Status ${res.status})`,
+          };
+        }
+        return { ok: true, status: res.status, data };
+      } catch {
+        return {
+          ok: false,
+          status: res.status,
+          error: `${fallbackErrMsg}: Format respons JSON tidak valid dari server.`,
+        };
+      }
     }
-    return fetch(url, { ...options, headers });
+
+    // Response is not JSON (e.g. HTML 404, 502 Bad Gateway, or proxy fallback)
+    const text = await res.text().catch(() => '');
+    let diagnosticMsg = `${fallbackErrMsg} (Status ${res.status})`;
+
+    if (text.includes('<!DOCTYPE') || text.includes('<html') || text.trim().startsWith('<')) {
+      if (res.status === 404) {
+        diagnosticMsg = 'Layanan API tidak ditemukan pada server deployment (404). Pastikan backend Express aktif.';
+      } else if (res.status === 502 || res.status === 503 || res.status === 504) {
+        diagnosticMsg = `Server deployment sedang tidak siap atau tidak dapat dijangkau (${res.status}). Silakan coba beberapa saat lagi.`;
+      } else {
+        diagnosticMsg = `Server mengembalikan halaman web HTML alih-alih data API (Status ${res.status}).`;
+      }
+    } else if (text.trim().length > 0 && text.trim().length < 160) {
+      diagnosticMsg = text.trim();
+    }
+
+    return {
+      ok: false,
+      status: res.status,
+      error: diagnosticMsg,
+    };
+  };
+
+  // Authenticated fetch helper with network resilience
+  const authFetch = async (url: string, options: RequestInit = {}) => {
+    try {
+      const headers = new Headers(options.headers || {});
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return await fetch(url, { ...options, headers });
+    } catch (err: any) {
+      console.warn(`[authFetch] Network connection issue for ${url}:`, err?.message || err);
+      // Return a synthesized Response so caller doesn't crash with unhandled TypeError: Failed to fetch
+      return new Response(JSON.stringify({ error: 'Jaringan atau server sedang tidak dapat dijangkau' }), {
+        status: 503,
+        statusText: 'Service Unavailable',
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   };
 
   const refreshUser = async () => {
     if (!token) return;
     try {
       const res = await authFetch('/api/auth/me');
-      if (res.ok) {
-        const data = await res.json();
-        setCurrentUser(data.user);
-        localStorage.setItem('payka_user', JSON.stringify(data.user));
+      const parsed = await parseApiResponse<{ user: User }>(res, 'Gagal memuat sesi');
+      if (parsed.ok && parsed.data?.user) {
+        setCurrentUser(parsed.data.user);
+        localStorage.setItem('payka_user', JSON.stringify(parsed.data.user));
       } else if (res.status === 401) {
         logout();
       }
@@ -80,23 +140,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        return { success: false, error: data.error || 'Login gagal.' };
+      const parsed = await parseApiResponse<{ user: User; token: string }>(res, 'Login gagal');
+      if (!parsed.ok || !parsed.data) {
+        return { success: false, error: parsed.error || 'Login gagal.' };
       }
 
-      setCurrentUser(data.user);
-      setToken(data.token);
-      localStorage.setItem('payka_user', JSON.stringify(data.user));
-      localStorage.setItem('payka_token', data.token);
+      const { user, token: authToken } = parsed.data;
+      if (!user || !authToken) {
+        return { success: false, error: 'Data sesi login tidak lengkap dari server.' };
+      }
+
+      setCurrentUser(user);
+      setToken(authToken);
+      localStorage.setItem('payka_user', JSON.stringify(user));
+      localStorage.setItem('payka_token', authToken);
 
       return { success: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'Gagal terhubung ke server.' };
+      const msg = err?.message || 'Gagal terhubung ke server.';
+      const friendly = msg.includes('Failed to fetch')
+        ? 'Gagal terhubung ke server backend. Pastikan server aktif dan periksa koneksi internet.'
+        : msg;
+      return { success: false, error: friendly };
     }
   };
 
@@ -104,23 +176,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        return { success: false, error: data.error || 'Pendaftaran gagal.' };
+      const parsed = await parseApiResponse<{ user: User; token: string }>(res, 'Pendaftaran gagal');
+      if (!parsed.ok || !parsed.data) {
+        return { success: false, error: parsed.error || 'Pendaftaran gagal.' };
       }
 
-      setCurrentUser(data.user);
-      setToken(data.token);
-      localStorage.setItem('payka_user', JSON.stringify(data.user));
-      localStorage.setItem('payka_token', data.token);
+      const { user, token: authToken } = parsed.data;
+      setCurrentUser(user);
+      setToken(authToken);
+      localStorage.setItem('payka_user', JSON.stringify(user));
+      localStorage.setItem('payka_token', authToken);
 
       return { success: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'Gagal mendaftar.' };
+      const msg = err?.message || 'Gagal mendaftar.';
+      const friendly = msg.includes('Failed to fetch')
+        ? 'Gagal terhubung ke server backend. Pastikan server aktif dan periksa koneksi internet.'
+        : msg;
+      return { success: false, error: friendly };
     }
   };
 
@@ -128,20 +208,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const res = await fetch('/api/auth/guest', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: JSON.stringify({ name: guestName, phone: guestPhone, address: guestAddress }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        return { success: false, error: data.error || 'Gagal masuk sebagai tamu.' };
+
+      const parsed = await parseApiResponse<{ user: User; token: string }>(res, 'Gagal masuk sebagai tamu');
+      if (!parsed.ok || !parsed.data) {
+        return { success: false, error: parsed.error || 'Gagal masuk sebagai tamu.' };
       }
-      setCurrentUser(data.user);
-      setToken(data.token);
-      localStorage.setItem('payka_user', JSON.stringify(data.user));
-      localStorage.setItem('payka_token', data.token);
+
+      const { user, token: authToken } = parsed.data;
+      setCurrentUser(user);
+      setToken(authToken);
+      localStorage.setItem('payka_user', JSON.stringify(user));
+      localStorage.setItem('payka_token', authToken);
       return { success: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'Gagal terhubung ke server.' };
+      const msg = err?.message || 'Gagal terhubung ke server.';
+      const friendly = msg.includes('Failed to fetch')
+        ? 'Gagal terhubung ke server backend. Pastikan server aktif dan periksa koneksi internet.'
+        : msg;
+      return { success: false, error: friendly };
     }
   };
 
