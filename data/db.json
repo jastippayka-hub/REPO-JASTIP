@@ -317,6 +317,42 @@
   ],
   "orders": [
     {
+      "id": "order-1791793544367",
+      "orderNumber": "PK-SKW-20261012-726",
+      "userId": "user-pelanggan-1",
+      "customerName": "Rusdiana (Pelanggan)",
+      "customerPhone": "081254001122",
+      "serviceType": "beli_makanan",
+      "storeName": "Toko Test",
+      "storeAddress": "Jl. Test",
+      "storeLat": 0.9069,
+      "storeLng": 108.9866,
+      "deliveryAddress": "Jl. Antar",
+      "deliverySubDistrict": "Singkawang Barat",
+      "deliveryLat": 0.9125,
+      "deliveryLng": 108.995,
+      "distanceKm": 1.1,
+      "items": [
+        {
+          "name": "Item 1",
+          "quantity": 1,
+          "estimatedPrice": 15000
+        }
+      ],
+      "shoppingEstimatedCost": 0,
+      "shippingFee": 7000,
+      "jastipFee": 5000,
+      "isExpress": false,
+      "totalAmount": 12000,
+      "paymentMethod": "COD",
+      "paymentStatus": "PENDING",
+      "status": "MENUNGGU_DRIVER",
+      "customerNotes": "",
+      "rejectedDriverIds": [],
+      "createdAt": "2026-10-12T08:25:44.368Z",
+      "updatedAt": "2026-10-12T08:25:44.368Z"
+    },
+    {
       "id": "order-1791791766791",
       "orderNumber": "PK-SKW-20261012-560",
       "userId": "user-pelanggan-1",
@@ -503,6 +539,16 @@
   ],
   "notifications": [
     {
+      "id": "notif-1791793544369-nodriver",
+      "userId": "user-pelanggan-1",
+      "title": "Menunggu Kurir Singkawang",
+      "message": "Pesanan PK-SKW-20261012-726 sedang menunggu kurir yang tersedia di area Singkawang.",
+      "type": "order",
+      "orderId": "order-1791793544367",
+      "createdAt": "2026-10-12T08:25:44.369Z",
+      "read": false
+    },
+    {
       "id": "notif-1791791766792-nodriver",
       "userId": "user-pelanggan-1",
       "title": "Menunggu Kurir Singkawang",
@@ -593,6 +639,14 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit-1791793544387-0i37",
+      "timestamp": "2026-10-12T08:25:44.387Z",
+      "action": "ORDER_CREATED",
+      "actorEmail": "rusdianaaa240@gmail.com",
+      "actorRole": "pelanggan",
+      "details": "Pesanan PK-SKW-20261012-726 senilai Rp 12.000 dibuat oleh Rusdiana (Pelanggan)"
+    },
     {
       "id": "audit-1791791766798-h1mv",
       "timestamp": "2026-10-12T07:56:06.798Z",
